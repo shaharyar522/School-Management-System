@@ -3,14 +3,12 @@
 @section('content')
 <h2>Mark Attendance</h2>
 
-<!-- Display Success Message -->
 @if(session('success'))
     <div style="color: green; font-weight: bold;">
         {{ session('success') }}
     </div>
 @endif
 
-<!-- Select Class Form -->
 <form action="{{ route('admin.attendance.create') }}" method="GET">
     <label for="class_id">Select Class:</label>
     <select name="class_id" id="class_id" required>
@@ -24,12 +22,11 @@
     <button type="submit">Select Class</button>
 </form>
 
-<!-- Show Students Only if Class Selected -->
-@if(count($students) > 0)
+@if($students->count() > 0)
+    <h3>Students in {{ $students->first()->class->name }}</h3> {{-- Show class name --}}
     <form action="{{ route('admin.attendance.store') }}" method="POST" style="margin-top:20px;">
         @csrf
         <input type="hidden" name="class_id" value="{{ request('class_id') }}">
-
         <label for="date">Select Date:</label>
         <input type="date" name="date" value="{{ date('Y-m-d') }}" required>
 
@@ -50,7 +47,6 @@
             </tr>
             @endforeach
         </table>
-
         <button type="submit" style="margin-top:10px;">Save Attendance</button>
     </form>
 @endif
