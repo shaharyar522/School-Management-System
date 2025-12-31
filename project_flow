@@ -1,0 +1,124 @@
+✅  Prompt
+
+
+  'Teacher selects Class & Date
+→ Marks Attendance
+→ Saves Data
+→ Students & Parents view attendance
+→ Admin generates attendance reports
+
+8. Exams & Results FLOW
+
+Admin creates Exam
+→ Assigns Subjects
+→ Teacher enters marks
+→ System calculates total & grades
+→ Admin publishes results
+→ Students & Parents view result cards
+
+9. Fee Management FLOW
+
+Admin sets fee structure
+→ System generates vouchers
+→ Fee marked Paid / Unpaid
+→ Payment history stored
+→ Parents & Students view status
+→ Admin views collection reports
+
+10. Communication FLOW
+
+Admin posts Notice
+→ Notification sent to Students / Parents / Teachers
+→ Users read from dashboard
+→ Messages exchanged if enabled
+
+11. Reports & Analytics FLOW
+
+Admin selects report type
+→ Attendance / Fees / Performance
+→ System fetches data
+→ Displays tables & charts
+→ Export to PDF / Excel
+
+12. Optional Features FLOW
+
+Student completes year
+→ ID card generated (PDF)
+Exam completed
+→ Result card generated (PDF)
+Library / Hostel / Transport modules
+→ Operate independently but linked to student
+
+END-TO-END SUMMARY FLOW
+
+Admin sets system
+→ Teachers operate academics
+→ Students learn & track progress
+→ Parents monitor child
+→ Admin monitors everything
+
+this is my project now plesae i am start in laravel so pelase give me  compelte flow of this like step buy step so i want to only give me a codes and flow that is  only need this do not extera code nad lfoe beucase i am develop this project in laravel step buy step so please
+in this project i am a beginer i do no no where is files , and which one name of file and db etc
+step buy step and tell me a with iff need command in laravel
+
+start with this
+jitna ap say pohco utna dain ahian Gives as much as you are asked.
+ok
+
+so start this
+'School / College Management System – COMPLETE FLOW
+SYSTEM ENTRY FLOW
+
+Visitor → Landing Page → Login → Role-based Dashboard
+
+1. Landing Page / Homepage FLOW
+
+Visitor opens website
+→ Views school intro, facilities, notices, admissions
+→ Clicks Login (Student / Teacher / Parent / Admin)
+→ Redirected to Login Page
+
+2. Authentication FLOW
+
+User enters Roll No / Email + Password
+→ System verifies credentials
+→ Detects user role
+→ Redirects to respective dashboard
+
+(Admin creates all accounts)'
+
+
+
+
+
+
+
+
+
+
+sinces i have completed Landing Page, Login, Role-based Dashboard, and Database setup,
+
+✅ At this point, you have:
+
+Landing Page
+
+Login system
+
+Role-based dashboard
+
+Database and migrations set up
+
+
+/////////////////
+
+
+logical module is Admin Management & Users (Students, Teachers, Parents) setup, because all other modules depend on these accounts
+students table
+teachers table
+parents table
+classes table
+subjects table
+
+
+
+
