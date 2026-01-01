@@ -74,8 +74,6 @@ Route::post('/classes/store', [ClassesController::class, 'store'])
 Route::delete('/classes/{id}', [ClassesController::class, 'destroy'])
     ->name('admin.classes.destroy');
 
-
-
 // for subject
 
 // Subjects Management
