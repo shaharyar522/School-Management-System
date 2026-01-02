@@ -221,9 +221,13 @@
                 <i class="fas fa-chart-bar"></i>
                 <span>Report</span>
             </a>
-            <a href="{{ route('admin.exams.create') }}" class="{{ request()->routeIs('admin.exams.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.exams.index') }}" class="{{ request()->routeIs('admin.exams.*') ? 'active' : '' }}">
                 <i class="fas fa-file-alt"></i>
-                <span>Add Exam</span>
+                <span>Exams</span>
+            </a>
+            <a href="{{ route('admin.exam_subjects.index') }}" class="{{ request()->routeIs('admin.exam_subjects.*') ? 'active' : '' }}">
+                <i class="fas fa-list"></i>
+                <span>Exam Subjects</span>
             </a>
         </nav>
     </div>

@@ -316,9 +316,14 @@
             <h1>📖 All Subjects</h1>
             <div class="header-info">Manage all subjects offered in your school</div>
         </div>
-        <a href="{{ route('admin.subjects.create') }}" class="add-btn">
-            <span>➕</span> Add New Subject
-        </a>
+        <div style="display: flex; gap: 10px;">
+            <a href="{{ route('admin.export.subjects') }}" class="add-btn" style="background: rgba(76, 175, 80, 0.25); border-color: rgba(76, 175, 80, 1); color: white;">
+                <span>📥</span> Export CSV
+            </a>
+            <a href="{{ route('admin.subjects.create') }}" class="add-btn">
+                <span>➕</span> Add New Subject
+            </a>
+        </div>
     </div>
 
     <div class="page-content">
@@ -329,18 +334,51 @@
             </div>
         @endif
 
+        <!-- Search Bar -->
+        <div style="margin-bottom: 30px;">
+            <form method="GET" action="{{ route('admin.subjects.index') }}" style="display: flex; gap: 10px;">
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="🔍 Search by subject name..."
+                    value="{{ $search ?? '' }}"
+                    style="flex: 1; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; transition: all 0.3s ease;"
+                    onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 10px rgba(102,126,234,0.2)';"
+                    onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';"
+                >
+                <button
+                    type="submit"
+                    style="padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(102,126,234,0.3)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                >
+                    Search
+                </button>
+                @if($search)
+                    <a
+                        href="{{ route('admin.subjects.index') }}"
+                        style="padding: 12px 25px; background: #f5f5f5; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; transition: all 0.3s ease;"
+                        onmouseover="this.style.background='#e0e0e0';"
+                        onmouseout="this.style.background='#f5f5f5';"
+                    >
+                        Clear
+                    </a>
+                @endif
+            </form>
+        </div>
+
         <!-- Statistics -->
-        @if(count($subjects) > 0)
+        @if($subjects->count() > 0)
             <div class="stats">
                 <div class="stat-box">
-                    <div class="stat-number">{{ count($subjects) }}</div>
+                    <div class="stat-number">{{ $subjects->total() }}</div>
                     <div class="stat-label">Total Subjects</div>
                 </div>
             </div>
         @endif
 
         <!-- Subjects Table -->
-        @if(count($subjects) > 0)
+        @if($subjects->count() > 0)
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -363,11 +401,14 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
+                                    <a href="{{ route('admin.subjects.edit', $subject->id) }}" class="btn btn-edit">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
                                     <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST" style="margin: 0;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this subject? This action cannot be undone.')">
-                                            <span>🗑️</span> Delete
+                                            <i class="fas fa-trash"></i> Delete
                                         </button>
                                     </form>
                                 </div>
@@ -376,6 +417,11 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; margin-top: 30px; gap: 5px;">
+                {{ $subjects->appends(request()->query())->links() }}
             </div>
         @else
             <div class="empty-state">

@@ -2,285 +2,414 @@
 
 @section('content')
 <style>
-    .dashboard-welcome {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .page-header {
         color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        margin-bottom: 2rem;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        margin-bottom: 40px;
     }
 
-    .dashboard-welcome h3 {
-        font-size: 1.75rem;
-        margin-bottom: 0.5rem;
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        letter-spacing: -0.5px;
     }
 
-    .dashboard-welcome p {
-        font-size: 1rem;
-        opacity: 0.95;
+    .page-header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
     }
 
+    /* Statistics Grid */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-bottom: 2rem;
+        gap: 20px;
+        margin-bottom: 40px;
     }
 
     .stat-card {
         background: white;
         border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        border-left: 5px solid #667eea;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         transition: all 0.3s ease;
+        border-left: 5px solid #667eea;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .stat-card:hover {
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
     }
 
     .stat-card.users {
-        border-left-color: #667eea;
+        border-left-color: #2196f3;
     }
 
     .stat-card.students {
-        border-left-color: #48bb78;
+        border-left-color: #4caf50;
     }
 
     .stat-card.teachers {
-        border-left-color: #ed8936;
+        border-left-color: #ff9800;
     }
 
     .stat-card.classes {
-        border-left-color: #9f7aea;
+        border-left-color: #e91e63;
     }
 
-    .stat-card .icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
+    .stat-card.subjects {
+        border-left-color: #00bcd4;
     }
 
-    .stat-card .label {
-        font-size: 0.95rem;
-        color: #718096;
-        margin-bottom: 0.5rem;
+    .stat-card.exams {
+        border-left-color: #9c27b0;
+    }
+
+    .stat-card.attendance {
+        border-left-color: #8bc34a;
+    }
+
+    .stat-card.rate {
+        border-left-color: #f44336;
+    }
+
+    .stat-content h3 {
+        font-size: 0.9rem;
+        color: #999;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
         font-weight: 600;
     }
 
-    .stat-card .value {
+    .stat-number {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #2d3748;
-        margin-bottom: 0.5rem;
+        color: #333;
+        line-height: 1;
     }
 
-    .stat-card .percentage {
-        font-size: 0.85rem;
-        color: #48bb78;
+    .stat-icon {
+        font-size: 3rem;
+        opacity: 0.2;
     }
 
+    .stat-card.users .stat-icon { color: #2196f3; }
+    .stat-card.students .stat-icon { color: #4caf50; }
+    .stat-card.teachers .stat-icon { color: #ff9800; }
+    .stat-card.classes .stat-icon { color: #e91e63; }
+    .stat-card.subjects .stat-icon { color: #00bcd4; }
+    .stat-card.exams .stat-icon { color: #9c27b0; }
+    .stat-card.attendance .stat-icon { color: #8bc34a; }
+    .stat-card.rate .stat-icon { color: #f44336; }
+
+    /* Quick Actions */
     .quick-actions {
         background: white;
         border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        margin-bottom: 2rem;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        margin-bottom: 40px;
     }
 
-    .quick-actions h4 {
-        font-size: 1.25rem;
-        margin-bottom: 1.5rem;
-        color: #2d3748;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .quick-actions h4 i {
-        color: #667eea;
+    .quick-actions h2 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 25px;
+        font-weight: 600;
     }
 
     .actions-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
     }
 
     .action-btn {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        padding: 1.5rem;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
+        padding: 15px 20px;
         border: none;
         border-radius: 8px;
-        cursor: pointer;
         text-decoration: none;
-        transition: all 0.3s ease;
+        cursor: pointer;
         font-weight: 600;
-        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        text-align: center;
     }
 
     .action-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
     }
 
-    .action-btn i {
-        font-size: 1.75rem;
+    .action-btn.secondary {
+        background: #f5f5f5;
+        color: #333;
+        border: 2px solid #e0e0e0;
     }
 
-    .system-info {
+    .action-btn.secondary:hover {
+        background: #e0e0e0;
+    }
+
+    /* Info Section */
+    .info-section {
         background: white;
         border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        margin-bottom: 40px;
     }
 
-    .system-info h4 {
-        font-size: 1.25rem;
-        margin-bottom: 1.5rem;
-        color: #2d3748;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .system-info h4 i {
-        color: #667eea;
-    }
-
-    .info-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-    }
-
-    .info-item {
-        padding: 1rem;
-        background: #f8f9fa;
-        border-radius: 8px;
-        border-left: 3px solid #667eea;
-    }
-
-    .info-item .label {
-        font-size: 0.8rem;
-        color: #718096;
-        text-transform: uppercase;
+    .info-section h2 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 20px;
         font-weight: 600;
-        margin-bottom: 0.5rem;
     }
 
-    .info-item .value {
-        font-size: 1.25rem;
-        color: #2d3748;
+    .info-box {
+        background: #f9f9f9;
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .info-box h4 {
+        color: #333;
+        margin-bottom: 8px;
         font-weight: 600;
+    }
+
+    .info-box p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 
     @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 2rem;
+        }
+
         .stats-grid {
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 15px;
+        }
+
+        .stat-card {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
         }
 
         .actions-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
         }
 
-        .dashboard-welcome h3 {
-            font-size: 1.25rem;
+        .quick-actions,
+        .info-section {
+            padding: 20px;
         }
 
-        .stat-card .value {
-            font-size: 2rem;
+        .quick-actions h2,
+        .info-section h2 {
+            font-size: 1.3rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .stat-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .stat-content h3,
+        .stat-icon {
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
         }
     }
 </style>
 
-<!-- Welcome Section -->
-<div class="dashboard-welcome">
-    <h3><i class="fas fa-chart-line"></i> Dashboard Overview</h3>
-    <p>Welcome to your School Management System Admin Panel. Monitor all school activities here.</p>
+<div class="dashboard-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>📊 Dashboard</h1>
+        <p>Welcome back! Here's an overview of your school management system.</p>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid">
+        <!-- Total Users -->
+        <div class="stat-card users">
+            <div class="stat-content">
+                <h3>Total Users</h3>
+                <div class="stat-number">{{ $stats['total_users'] }}</div>
+            </div>
+            <div class="stat-icon">👥</div>
+        </div>
+
+        <!-- Total Students -->
+        <div class="stat-card students">
+            <div class="stat-content">
+                <h3>Total Students</h3>
+                <div class="stat-number">{{ $stats['total_students'] }}</div>
+            </div>
+            <div class="stat-icon">🎓</div>
+        </div>
+
+        <!-- Total Teachers -->
+        <div class="stat-card teachers">
+            <div class="stat-content">
+                <h3>Total Teachers</h3>
+                <div class="stat-number">{{ $stats['total_teachers'] }}</div>
+            </div>
+            <div class="stat-icon">👨‍🏫</div>
+        </div>
+
+        <!-- Total Classes -->
+        <div class="stat-card classes">
+            <div class="stat-content">
+                <h3>Total Classes</h3>
+                <div class="stat-number">{{ $stats['total_classes'] }}</div>
+            </div>
+            <div class="stat-icon">🏫</div>
+        </div>
+
+        <!-- Total Subjects -->
+        <div class="stat-card subjects">
+            <div class="stat-content">
+                <h3>Total Subjects</h3>
+                <div class="stat-number">{{ $stats['total_subjects'] }}</div>
+            </div>
+            <div class="stat-icon">📚</div>
+        </div>
+
+        <!-- Total Exams -->
+        <div class="stat-card exams">
+            <div class="stat-content">
+                <h3>Total Exams</h3>
+                <div class="stat-number">{{ $stats['total_exams'] }}</div>
+            </div>
+            <div class="stat-icon">📝</div>
+        </div>
+
+        <!-- Today's Attendance -->
+        <div class="stat-card attendance">
+            <div class="stat-content">
+                <h3>Today's Attendance</h3>
+                <div class="stat-number">{{ $stats['today_attendance'] }}</div>
+            </div>
+            <div class="stat-icon">✅</div>
+        </div>
+
+        <!-- Attendance Rate -->
+        <div class="stat-card rate">
+            <div class="stat-content">
+                <h3>Attendance Rate</h3>
+                <div class="stat-number">{{ $stats['attendance_rate'] }}%</div>
+            </div>
+            <div class="stat-icon">📊</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h2>🚀 Quick Actions</h2>
+        <div class="actions-grid">
+            <a href="{{ route('admin.users.create') }}" class="action-btn">
+                <span>➕</span> Add User
+            </a>
+            <a href="{{ route('admin.classes.create') }}" class="action-btn">
+                <span>➕</span> Add Class
+            </a>
+            
+            <a href="{{ route('admin.subjects.create') }}" class="action-btn">
+                <span>➕</span> Add Subject
+            </a>
+
+            <a href="{{ route('admin.exams.create') }}" class="action-btn">
+                <span>➕</span> Add Exam
+            </a>
+
+            <a href="{{ route('admin.attendance.index') }}" class="action-btn secondary">
+                <span>📋</span> Mark Attendance
+            </a>
+
+            <a href="{{ route('admin.attendance.report') }}" class="action-btn secondary">
+                <span>📊</span> View Report
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Information Section -->
+    <div class="info-section">
+        <h2>ℹ️ System Information</h2>
+
+        <div class="info-box">
+            <h4>📈 User Statistics</h4>
+            <p>Total: {{ $stats['total_users'] }} | Students: {{ $stats['total_students'] }} | Teachers: {{ $stats['total_teachers'] }}</p>
+        </div>
+
+        <div class="info-box">
+            <h4>🎓 Academic Information</h4>
+            <p>Classes: {{ $stats['total_classes'] }} | Subjects: {{ $stats['total_subjects'] }} | Exams: {{ $stats['total_exams'] }}</p>
+        </div>
+
+        <div class="info-box">
+            <h4>✅ Attendance Summary</h4>
+            <p>Total Records: {{ $stats['today_attendance'] }} | Average Rate: {{ $stats['attendance_rate'] }}%</p>
+        </div>
+
+        <div class="info-box">
+            <h4>💡 Tips</h4>
+            <p>Use the Quick Actions section to quickly navigate to the most common tasks. You can also use the sidebar menu for more options.</p>
+        </div>
+    </div>
 </div>
 
-<!-- Statistics Cards -->
-<div class="stats-grid">
-    <div class="stat-card users">
-        <div class="icon" style="color: #667eea;"><i class="fas fa-users"></i></div>
-        <div class="label">Total Users</div>
-        <div class="value">0</div>
-        <div class="percentage"><i class="fas fa-arrow-up"></i> 0% from last month</div>
-    </div>
-
-    <div class="stat-card students">
-        <div class="icon" style="color: #48bb78;"><i class="fas fa-user-graduate"></i></div>
-        <div class="label">Total Students</div>
-        <div class="value">0</div>
-        <div class="percentage" style="color: #48bb78;"><i class="fas fa-arrow-up"></i> 0% from last month</div>
-    </div>
-
-    <div class="stat-card teachers">
-        <div class="icon" style="color: #ed8936;"><i class="fas fa-chalkboard-user"></i></div>
-        <div class="label">Total Teachers</div>
-        <div class="value">0</div>
-        <div class="percentage" style="color: #ed8936;"><i class="fas fa-arrow-up"></i> 0% from last month</div>
-    </div>
-
-    <div class="stat-card classes">
-        <div class="icon" style="color: #9f7aea;"><i class="fas fa-school"></i></div>
-        <div class="label">Total Classes</div>
-        <div class="value">0</div>
-        <div class="percentage" style="color: #9f7aea;"><i class="fas fa-arrow-up"></i> 0% from last month</div>
-    </div>
-</div>
-
-<!-- Quick Actions -->
-<div class="quick-actions">
-    <h4><i class="fas fa-lightning-bolt"></i> Quick Actions</h4>
-    <div class="actions-grid">
-        <a href="{{ route('admin.users.index') }}" class="action-btn">
-            <i class="fas fa-user-plus"></i> Add User
-        </a>
-        <a href="{{ route('admin.classes.index') }}" class="action-btn" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
-            <i class="fas fa-plus"></i> Add Class
-        </a>
-        <a href="{{ route('admin.subjects.index') }}" class="action-btn" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);">
-            <i class="fas fa-book-plus"></i> Add Subject
-        </a>
-        <a href="{{ route('admin.exams.create') }}" class="action-btn" style="background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);">
-            <i class="fas fa-file-alt"></i> Create Exam
-        </a>
-    </div>
-</div>
-
-<!-- System Information -->
-<div class="system-info">
-    <h4><i class="fas fa-info-circle"></i> System Information</h4>
-    <div class="info-list">
-        <div class="info-item">
-            <div class="label">System Status</div>
-            <div class="value"><span style="color: #48bb78;">✓</span> Online</div>
-        </div>
-        <div class="info-item">
-            <div class="label">Last Updated</div>
-            <div class="value">Today</div>
-        </div>
-        <div class="info-item">
-            <div class="label">School Year</div>
-            <div class="value">2025-2026</div>
-        </div>
-        <div class="info-item">
-            <div class="label">Database Status</div>
-            <div class="value"><span style="color: #48bb78;">✓</span> Connected</div>
-        </div>
-    </div>
-</div>
 @endsection

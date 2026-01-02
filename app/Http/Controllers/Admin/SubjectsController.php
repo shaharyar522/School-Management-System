@@ -10,10 +10,14 @@ use App\Models\Classes;
 class SubjectsController extends Controller
 {
     // Show all subjects
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = Subject::with('class')->get();
-        return view('admin.subjects.index', compact('subjects'));
+        $search = $request->search;
+        $subjects = Subject::with('class')
+            ->when($search, function($query) use ($search) {
+                return $query->where('name', 'like', '%'.$search.'%');
+            })->paginate(15);
+        return view('admin.subjects.index', compact('subjects', 'search'));
     }
 
     // Show form to create new subject
@@ -38,6 +42,33 @@ class SubjectsController extends Controller
 
         return redirect()->route('admin.subjects.index')
             ->with('success','Subject created successfully');
+    }
+
+    // Show subject edit form
+    public function edit($id)
+    {
+        $subject = Subject::findOrFail($id);
+        $classes = Classes::all();
+        return view('admin.subjects.edit', compact('subject', 'classes'));
+    }
+
+    // Update subject
+    public function update(Request $request, $id)
+    {
+        $subject = Subject::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required',
+            'class_id' => 'required|exists:classes,id'
+        ]);
+
+        $subject->update([
+            'name' => $request->name,
+            'class_id' => $request->class_id
+        ]);
+
+        return redirect()->route('admin.subjects.index')
+            ->with('success','Subject updated successfully');
     }
 
     // Delete subject

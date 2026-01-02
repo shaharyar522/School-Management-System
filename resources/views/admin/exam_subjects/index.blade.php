@@ -74,28 +74,6 @@
         padding: 40px;
     }
 
-    .alert {
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-bottom: 25px;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .alert-success {
-        background: #d4edda;
-        border-left: 5px solid #28a745;
-        color: #155724;
-    }
-
-    .alert-success::before {
-        content: '✓';
-        font-size: 1.2rem;
-        font-weight: bold;
-    }
-
     .table-wrapper {
         overflow-x: auto;
     }
@@ -142,47 +120,37 @@
         color: #667eea;
     }
 
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .btn {
-        padding: 8px 16px;
+    .action-btn {
+        padding: 6px 12px;
         border: none;
-        border-radius: 6px;
+        border-radius: 5px;
+        text-decoration: none;
         font-size: 0.85rem;
-        font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
-        text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        border: 2px solid transparent;
+        gap: 5px;
+        margin-right: 5px;
     }
 
-    .btn-delete {
-        background: #ff6b6b;
+    .action-btn.edit {
+        background: #2196f3;
         color: white;
     }
 
-    .btn-delete:hover {
-        background: #ff5252;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 15px rgba(255, 107, 107, 0.3);
+    .action-btn.edit:hover {
+        background: #1976d2;
     }
 
-    .btn-edit {
-        background: #4ecdc4;
+    .action-btn.delete {
+        background: #e74c3c;
         color: white;
+        border: none;
     }
 
-    .btn-edit:hover {
-        background: #45b8af;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 15px rgba(78, 205, 196, 0.3);
+    .action-btn.delete:hover {
+        background: #c0392b;
     }
 
     .empty-state {
@@ -234,6 +202,24 @@
     .stat-label {
         font-size: 0.85rem;
         opacity: 0.9;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .badge-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .badge-secondary {
+        background: #e8eef7;
+        color: #667eea;
     }
 
     @media (max-width: 768px) {
@@ -293,121 +279,73 @@
 <div class="container">
     <div class="page-header">
         <div>
-            <h1>📚 All Classes</h1>
-            <div class="header-info">Manage all classes in your school</div>
+            <h1>📚 Exam Subjects</h1>
+            <div class="header-info">Manage exam-subject assignments</div>
         </div>
-        <div style="display: flex; gap: 10px;">
-            <a href="{{ route('admin.export.classes') }}" class="add-btn" style="background: rgba(76, 175, 80, 0.25); border-color: rgba(76, 175, 80, 1); color: white;">
-                <span>📥</span> Export CSV
-            </a>
-            <a href="{{ route('admin.classes.create') }}" class="add-btn">
-                <span>➕</span> Add New Class
-            </a>
-        </div>
+        <a href="{{ route('admin.exam_subjects.create') }}" class="add-btn">
+            <span>➕</span> Assign Exam Subject
+        </a>
     </div>
 
     <div class="page-content">
-        <!-- Success Message -->
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <!-- Search Bar -->
-        <div style="margin-bottom: 30px;">
-            <form method="GET" action="{{ route('admin.classes.index') }}" style="display: flex; gap: 10px;">
-                <input
-                    type="text"
-                    name="search"
-                    placeholder="🔍 Search by class name..."
-                    value="{{ $search ?? '' }}"
-                    style="flex: 1; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; transition: all 0.3s ease;"
-                    onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 10px rgba(102,126,234,0.2)';"
-                    onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none';"
-                >
-                <button
-                    type="submit"
-                    style="padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(102,126,234,0.3)';"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
-                >
-                    Search
-                </button>
-                @if($search)
-                    <a
-                        href="{{ route('admin.classes.index') }}"
-                        style="padding: 12px 25px; background: #f5f5f5; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; transition: all 0.3s ease;"
-                        onmouseover="this.style.background='#e0e0e0';"
-                        onmouseout="this.style.background='#f5f5f5';"
-                    >
-                        Clear
-                    </a>
-                @endif
-            </form>
-        </div>
-
         <!-- Statistics -->
-        @if($classes->count() > 0)
+        @if(count($examSubjects) > 0)
             <div class="stats">
                 <div class="stat-box">
-                    <div class="stat-number">{{ $classes->total() }}</div>
-                    <div class="stat-label">Total Classes</div>
+                    <div class="stat-number">{{ count($examSubjects) }}</div>
+                    <div class="stat-label">Total Assignments</div>
                 </div>
             </div>
         @endif
 
-        <!-- Classes Table -->
-        @if($classes->count() > 0)
+        <!-- Exam Subjects Table -->
+        @if(count($examSubjects) > 0)
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Class Name</th>
+                            <th>#</th>
+                            <th>Exam</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Total Marks</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($classes as $class)
+                        @foreach($examSubjects as $examSubject)
                         <tr>
-                            <td>#{{ $class->id }}</td>
+                            <td>#{{ $loop->iteration }}</td>
+                            <td><span class="badge badge-primary">{{ $examSubject->exam->name }}</span></td>
+                            <td><span class="badge badge-secondary">{{ $examSubject->class->name }}</span></td>
+                            <td><strong>{{ $examSubject->subject->name }}</strong></td>
+                            <td>{{ $examSubject->total_marks ?? 'N/A' }}</td>
                             <td>
-                                <strong>{{ $class->name }}</strong>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="{{ route('admin.classes.edit', $class->id) }}" class="btn btn-edit">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </a>
-                                    <form action="{{ route('admin.classes.destroy', $class->id) }}" method="POST" style="margin: 0;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this class? This action cannot be undone.')">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </button>
-                                    </form>
-                                </div>
+                                <a href="{{ route('admin.exam_subjects.edit', $examSubject->id) }}" class="action-btn edit">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form action="{{ route('admin.exam_subjects.destroy', $examSubject->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="action-btn delete">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-
-            <!-- Pagination -->
-            <div style="display: flex; justify-content: center; margin-top: 30px; gap: 5px;">
-                {{ $classes->appends(request()->query())->links() }}
-            </div>
         @else
             <div class="empty-state">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                 </svg>
-                <h3>No Classes Found</h3>
-                <p>There are currently no classes in the system.</p>
-                <a href="{{ route('admin.classes.create') }}" class="add-btn" style="justify-content: center; margin: 0 auto;">
-                    <span>➕</span> Create First Class
+                <h3>No Exam Subjects Found</h3>
+                <p>There are currently no exam-subject assignments in the system.</p>
+                <a href="{{ route('admin.exam_subjects.create') }}" class="add-btn" style="justify-content: center; margin: 0 auto;">
+                    <span>➕</span> Create First Assignment
                 </a>
             </div>
         @endif

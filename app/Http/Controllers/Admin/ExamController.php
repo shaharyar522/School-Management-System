@@ -8,10 +8,13 @@ use App\Models\Exam;
 
 class ExamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $exams = Exam::all();
-        return view('admin.exams.index', compact('exams'));
+        $search = $request->search;
+        $exams = Exam::when($search, function($query) use ($search) {
+            return $query->where('name', 'like', '%'.$search.'%');
+        })->paginate(15);
+        return view('admin.exams.index', compact('exams', 'search'));
     }
 
     public function create()
@@ -29,5 +32,40 @@ class ExamController extends Controller
 
         return redirect()->route('admin.exams.index')
             ->with('success','Exam created successfully');
+    }
+
+    public function show($id)
+    {
+        $exam = Exam::findOrFail($id);
+        return view('admin.exams.show', compact('exam'));
+    }
+
+    public function edit($id)
+    {
+        $exam = Exam::findOrFail($id);
+        return view('admin.exams.edit', compact('exam'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $exam = Exam::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|unique:exams,name,' . $id
+        ]);
+
+        $exam->update($request->all());
+
+        return redirect()->route('admin.exams.index')
+            ->with('success', 'Exam updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $exam = Exam::findOrFail($id);
+        $exam->delete();
+
+        return redirect()->route('admin.exams.index')
+            ->with('success', 'Exam deleted successfully');
     }
 }

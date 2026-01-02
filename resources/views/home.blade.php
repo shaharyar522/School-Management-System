@@ -285,7 +285,7 @@
     </section>
 
     <footer>
-        <p>&copy; 2026 School Management System. All Rights Reserved.</p>
+        <p>&copy; 2026 School Management System. All Rights Reserved. | Shahar Yar</p>
     </footer>
 </body>
 </html>
